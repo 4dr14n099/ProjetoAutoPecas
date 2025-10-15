@@ -40,9 +40,9 @@ public class FormaPagamento {
     @Column(name = "FORM_ATIVO")
     private boolean formAtivo;
 
-    @ManyToOne
-    @JoinColumn(name = "RES_ID")  // A chave estrangeira que faz a ligação com ProjetoAutoPecasReserva
-    private PedidoAutoPecasRepository pagReserva;  // Nome que será referenciado no mappedBy
+//    @ManyToOne
+//    @JoinColumn(name = "RES_ID")  // A chave estrangeira que faz a ligação com ProjetoAutoPecasReserva
+//    private PedidoAutoPecasRepository pagReserva;  // Nome que será referenciado no mappedBy
 
     public FormaPagamento(Long formId, String formDescricao, String formTipo,
                           Integer formNumeroParcelas, Integer formDiasEntreParcelas,

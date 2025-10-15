@@ -26,11 +26,11 @@ public class PedidoAutoPecas {
     @JoinColumn(name = "CLI_ID")
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PedidoAutoPecas> itens = new ArrayList<>();
+//    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<PedidoAutoPecas> itens = new ArrayList<>();
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+//    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
     @Column(name = "PED_DATA", nullable = false)
     private Date pedData;
