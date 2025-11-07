@@ -1,58 +1,51 @@
 package org.example.resources;
 
 import org.example.entities.PedidoAutoPecas;
-import org.example.repositories.PedidoAutoPecasRepository;
-import org.springframework.http.HttpStatus;
+import org.example.services.PedidoAutoPecasService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RestController
+@RequestMapping("pedidos")
 public class PedidoAutoPecasController {
 
-    private PedidoAutoPecasRepository pedidoAutoPecasRepository;
+    @Autowired
+    private PedidoAutoPecasService service;
 
     @GetMapping
-    public List<PedidoAutoPecas> listarTodos() {
-        return pedidoAutoPecasRepository.findAll();
+    public ResponseEntity<List<PedidoAutoPecas>> listarTodos() {
+        List<PedidoAutoPecas> list = service.listarTodos();
+        return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PedidoAutoPecas> buscarPorId(@PathVariable Long id) {
-        return pedidoAutoPecasRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        PedidoAutoPecas pedido = service.buscarPorId(id);
+        return ResponseEntity.ok().body(pedido);
     }
 
     @PostMapping
     public ResponseEntity<PedidoAutoPecas> criar(@RequestBody PedidoAutoPecas pedido) {
-        try {
-            PedidoAutoPecas salvo = pedidoAutoPecasRepository.save(pedido);
-            return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        PedidoAutoPecas salvo = service.salvar(pedido);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(salvo.getPedId()).toUri();
+        return ResponseEntity.created(uri).body(salvo);
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<PedidoAutoPecas> atualizar(@PathVariable Long id, @RequestBody PedidoAutoPecas pedido) {
-//        return pedidoAutoPecasRepository.findById(id)
-//                .map(pedidoExistente -> {
-//                    pedido.pedId(id);
-//                    PedidoAutoPecas atualizado = pedidoAutoPecasRepository.save(pedido);
-//                    return ResponseEntity.ok(atualizado);
-//                })
-//                .orElse(ResponseEntity.notFound().build());
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<PedidoAutoPecas> atualizar(@PathVariable Long id, @RequestBody PedidoAutoPecas pedido) {
+        PedidoAutoPecas atualizado = service.atualizar(id, pedido);
+        return ResponseEntity.ok(atualizado);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        return pedidoAutoPecasRepository.findById(id)
-                .map(pedido -> {
-                    pedidoAutoPecasRepository.delete(pedido);
-                    return ResponseEntity.noContent().<Void>build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

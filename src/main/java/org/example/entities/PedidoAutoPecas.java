@@ -1,14 +1,10 @@
 package org.example.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.entities.Cliente;
-import org.example.entities.FormaPagamento;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
@@ -21,9 +17,9 @@ public class PedidoAutoPecas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pedId;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "CLI_ID")
+    @JsonIgnoreProperties({"enderecos", "contatos", "endProprietario"})
     private Cliente cliente;
 
 //    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
