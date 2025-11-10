@@ -2,7 +2,6 @@ package org.example.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,11 +19,6 @@ public class Cliente {
     @Column(name = "CLI_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cliId;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "END_PROP_ID")
-    private Proprietario endProprietario;
 
     @OneToMany(mappedBy = "endCliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();

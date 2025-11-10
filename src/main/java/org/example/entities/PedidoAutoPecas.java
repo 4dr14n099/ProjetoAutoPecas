@@ -19,7 +19,7 @@ public class PedidoAutoPecas {
 
     @ManyToOne
     @JoinColumn(name = "CLI_ID")
-    @JsonIgnoreProperties({"enderecos", "contatos", "endProprietario"})
+    @JsonIgnoreProperties({"enderecos", "contatos"})
     private Cliente cliente;
 
 //    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
