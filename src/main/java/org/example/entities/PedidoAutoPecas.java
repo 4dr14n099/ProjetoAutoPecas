@@ -7,6 +7,7 @@ import lombok.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "pedido_auto_pecas")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,11 +23,10 @@ public class PedidoAutoPecas {
     @JsonIgnoreProperties({"enderecos", "contatos"})
     private Cliente cliente;
 
-//    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<PedidoAutoPecas> itens = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "FORM_ID", nullable = true)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private FormaPagamento formaPagamento;
 
     @Column(name = "PED_DATA", nullable = false)
     private Date pedData;
@@ -40,10 +40,11 @@ public class PedidoAutoPecas {
     @Column(name = "PED_OBSERVACOES")
     private String pedObservacoes;
 
-    public PedidoAutoPecas(Long pedId, Cliente cliente, Date pedData,
+    public PedidoAutoPecas(Long pedId, Cliente cliente, FormaPagamento formaPagamento, Date pedData,
                            Double pedValorTotal, String pedStatus, String pedObservacoes) {
         this.pedId = pedId;
         this.cliente = cliente;
+        this.formaPagamento = formaPagamento;
         this.pedData = pedData;
         this.pedValorTotal = pedValorTotal;
         this.pedStatus = pedStatus;
